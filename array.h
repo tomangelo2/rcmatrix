@@ -11,6 +11,9 @@ public:
     CArray();
     ~CArray();
 
+
+
+
     double** A;
     int m_col, m_row; //wymiary
     unsigned int n; //ilość wystąpień
