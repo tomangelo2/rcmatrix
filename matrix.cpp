@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "matrix.h"
 
-CMatrix::CMatrix(int h, int w, double v, double f == 0.0f)
+CMatrix::CMatrix(int h, int w, double v, double f)
 {
     if(h <= 0 || w <= 0)
     {
@@ -26,12 +27,12 @@ CMatrix::CMatrix(CMatrix& m)
 
 CMatrix::CMatrix(std::fstream &f)
 {
-    array = new CArray(f)
+    array = new CArray(f);
 }
 
 CMatrix::CMatrix()
 {
-    array = new CArray()
+    array = new CArray();
 }
 
 CMatrix::~CMatrix()
@@ -40,31 +41,57 @@ CMatrix::~CMatrix()
         delete array;
 }
 
+void CMatrix::check(int i, int j)
+{
+    if(i < 0 || i >= array->m_row || j < 0 || j >= array->m_col)
+        throw WrongDim();
+}
+
+int CMatrix::getRows()
+{
+    return this->array->m_row;
+}
+
+int CMatrix::getColumns()
+{
+    return this->array->m_col;
+}
+
+double CMatrix::read(int col, int row)
+{
+    return this->array->A[col][row];
+}
+
+void CMatrix::write(int col, int row, double val)
+{
+    this->array->A[col][row] = val;
+}
+
 
 std::ostream& operator<<(std::ostream &os, CMatrix &matrix)
 {
-    os << "[";
     for (int i = 0; i < matrix.array->m_row; i++)
     {
+        os << "[ ";
         for (int j = 0; j < matrix.array->m_col; j++)
         {
-            os << matrix.array->A[i][j] << " ";
+            os << std::fixed << std::setprecision(1) << matrix.array->A[i][j] << " ";
         }
-        os << std::endl;
+        os << "]" << std::endl;
     }
-    os << "]";
+    //os << " ]";
     return os;
 }
 
-CMatrix& CMatrix::operator=(double** num)
+/*CMatrix& CMatrix::operator=(double num)
 {
-    if(num == nullptr)
+    if(num == NULL)
     {
         throw null_as_argument;
     }
     if(array->n == 1)
     {
-        array->assign(num); //przypisz tablicę jeśli ta nie jest nigdzie indziej wykorzystana
+        array->assign(num); //przypisz numer jeśli tablica nie jest nigdzie indziej wykorzystana
     }
     else
     {
@@ -73,9 +100,9 @@ CMatrix& CMatrix::operator=(double** num)
         this->array = sub;
     }
     return *this;
-}
+}*/
 
-CMatrix& CMatrix::operator=(CMatrix &mat)
+/*CMatrix& CMatrix::operator=(CMatrix &mat)
 {
     mat.array->n++;
     if(--array->n == 0)
@@ -83,33 +110,38 @@ CMatrix& CMatrix::operator=(CMatrix &mat)
 
     array = mat.array;
     return *this;
-}
+}*/
 
-CMatrix operator*(CMatrix &mat1, CMatrix &mat2)
+CMatrix operator*(CMatrix &mat1, CMatrix &mat2) //tu ma być tylko jedna macierz
 {
-    if(mat1.array == NULL || mat2.array == NULL)
-        throw null_as_argument();
-    if(mat1.array->m_col != mat2.array->m_row)
+    //if(mat1.array == NULL || mat2.array == NULL)
+        //throw null_as_argument();
+    if(mat1.getColumns() != mat2.getRows())
         throw WrongDim();
 
-    CMatrix newMat(mat1.array->m_row, mat2.array->m_col);
+    CMatrix newMat(mat1.getRows(), mat2.getColumns());
 
-    for(int i = 0; i < newMat.array->m_col; i++)
+    for(int i = 0; i < newMat.getColumns(); i++)
     {
-        for(int j = 0; j < newMat.array->m_col; i++)
+        for(int j = 0; j < newMat.getColumns(); i++)
         {
             double tmp = 0.0f;
 
-            for(int k = 0; k < mat1.array->m_col; k++)
+            for(int k = 0; k < mat1.getColumns(); k++)
             {
-                tmp += mat1.array->A[i][k] * mat2.array->A[k][j];
+                //tmp += mat1.array->A[i][k] * mat2.array->A[k][j];
+                tmp += mat1.read(i,k) * mat2.read(k,j);
             }
 
-            newMat.array->A[i][j] = tmp;
+            //newMat.array->A[i][j] = tmp;
+            newMat.write(i,j,tmp);
         }
     }
 
     return newMat;
 }
-
-//double
+/*
+double* operator[](int i)
+{
+    return array->A[i]
+}*/

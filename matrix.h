@@ -19,7 +19,13 @@ public:
     ~CMatrix();
 
     /*Metody*/
+    void check (int i, int j);
 
+    int getRows();
+    int getColumns();
+
+    double read(int col, int row);
+    void write(int col, int row, double val);
 
     /*operatory*/
     //Przypisanie macierzy jako klasy
@@ -29,12 +35,11 @@ public:
     //Operator przypisujący do wyjścia
     friend std::ostream& operator<<(std::ostream &os, CMatrix &matrix);
     //Mnożenie klasy macierzy
-    CMatrix& operator*(CMatrix &mat);
+    CMatrix& operator*(CMatrix &mat1, CMatrix &mat2);
     //Mnożenie tablicy
     //CMatrix& operator*(double **num);
     //Wybór elementu
     double* operator[](int i);
-
 
 private:
     CArray* array;
