@@ -1,7 +1,7 @@
-matrix: matrix.o test_matrix.cpp
+matrix: matrix.o array.o test_matrix.cpp
 	g++ -g -Wall -pedantic $^ -o $@
 
-matrix.o: matrix.cpp matrix.h array.o
+matrix.o: matrix.cpp matrix.h 
 	g++ -g -c -Wall -pedantic $< -o $@
 	
 array.o: array.cpp array.h
@@ -10,4 +10,4 @@ array.o: array.cpp array.h
 .PHONY: clean
 
 clean:
-	-rm matrix.o matrix.exe array.o
+	-rm matrix.o matrix array.o
