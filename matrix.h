@@ -21,10 +21,10 @@ public:
     /*Metody*/
     void check (int i, int j);
 
-    int getRows();
-    int getColumns();
+    int getRows() const;
+    int getColumns() const;
 
-    double read(int col, int row);
+    double read(int col, int row) const;
     void write(int col, int row, double val);
 
     /*operatory*/
@@ -35,8 +35,10 @@ public:
     //Operator przypisujący do wyjścia
     friend std::ostream& operator<<(std::ostream &os, CMatrix &matrix);
     //Mnożenie klasy macierzy
-    CMatrix& operator*(CMatrix &mat1, CMatrix &mat2);
+    CMatrix operator*(const CMatrix& mat) const;
+    //friend CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2);
     //Mnożenie tablicy
+    //friend CMatrix operator*(CMatrix mat1, CMatrix mat2);
     //CMatrix& operator*(double **num);
     //Wybór elementu
     double* operator[](int i);
@@ -44,5 +46,7 @@ public:
 private:
     CArray* array;
 };
+
+
 
 #endif // MATRIX_H

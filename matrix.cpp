@@ -47,17 +47,17 @@ void CMatrix::check(int i, int j)
         throw WrongDim();
 }
 
-int CMatrix::getRows()
+int CMatrix::getRows() const
 {
     return this->array->m_row;
 }
 
-int CMatrix::getColumns()
+int CMatrix::getColumns() const
 {
     return this->array->m_col;
 }
 
-double CMatrix::read(int col, int row)
+double CMatrix::read(int col, int row) const
 {
     return this->array->A[col][row];
 }
@@ -111,11 +111,35 @@ std::ostream& operator<<(std::ostream &os, CMatrix &matrix)
     array = mat.array;
     return *this;
 }*/
-
-CMatrix operator*(CMatrix &mat1, CMatrix &mat2) //tu ma być tylko jedna macierz
+CMatrix CMatrix::operator*(const CMatrix& mat) const
 {
     //if(mat1.array == NULL || mat2.array == NULL)
         //throw null_as_argument();
+    if(this->getColumns() != mat.getRows())
+        throw WrongDim();
+
+    CMatrix newMat(this->getRows(), mat.getColumns());
+
+    for(int i = 0; i < newMat.getColumns(); i++)
+    {
+        for(int j = 0; j < newMat.getColumns(); i++)
+        {
+            double tmp = 0.0f;
+
+            for(int k = 0; k < this->getColumns(); k++)
+            {
+                tmp += this->read(i,k) * mat.read(k,j);
+            }
+
+            newMat.write(i,j,tmp);
+        }
+    }
+
+    return newMat;
+}
+/*
+CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2)
+{
     if(mat1.getColumns() != mat2.getRows())
         throw WrongDim();
 
@@ -129,17 +153,15 @@ CMatrix operator*(CMatrix &mat1, CMatrix &mat2) //tu ma być tylko jedna macierz
 
             for(int k = 0; k < mat1.getColumns(); k++)
             {
-                //tmp += mat1.array->A[i][k] * mat2.array->A[k][j];
                 tmp += mat1.read(i,k) * mat2.read(k,j);
             }
 
-            //newMat.array->A[i][j] = tmp;
             newMat.write(i,j,tmp);
         }
     }
 
     return newMat;
-}
+}*/
 /*
 double* operator[](int i)
 {

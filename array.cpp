@@ -3,12 +3,12 @@
 CArray::CArray(int h, int w, double v, double f): m_col(w), m_row(h)
 {
     int i = 0;
-    A = new double*[h];
+    A = new double*[m_row];
     try
     {
-        for(i = 0; i < h; i++)
+        for(i = 0; i < m_row; i++)
         {
-            A[i] = new double[w];
+            A[i] = new double[m_col];
         }
     }catch(...)
     {
@@ -19,9 +19,9 @@ CArray::CArray(int h, int w, double v, double f): m_col(w), m_row(h)
         delete A;
         throw;
     }
-    for (i = 0; i < h; i++)
+    for (i = 0; i < m_row; i++)
     {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j < m_col; j++)
         {
             if(i == j)
             {
@@ -46,6 +46,11 @@ CArray::CArray(std::fstream &f)
 
     f >> this->m_row >> this->m_col;
 
+    if(this->m_row <= 0 || this->m_row <= 0)
+    {
+        throw WrongDim();
+    }
+
     try
     {
         A = new double*[m_row];
@@ -69,19 +74,14 @@ CArray::CArray(std::fstream &f)
         throw bad_alloc();
     }
 
-
-    if(this->m_row <= 0 || this->m_row <= 0)
-    {
-        delete A;
-        throw WrongDim();
-    }
-
     for(int i = 0; i < this->m_row; i++)
     {
         for(int j = 0; i < this->m_col; i++)
         {
             if(f.good())
-                f >> A[i][j];
+                f >> A[i][j]; //tutaj się sypie
+            //gdb - 3: A[i][j] = <error: Cannot access memory at address 0xabababab>
+            //czyli coś jest nie tak z alokacją
             else
             {
                 delete A;
