@@ -14,9 +14,9 @@ CArray::CArray(int h, int w, double v, double f): m_col(w), m_row(h)
     {
         while(i > 0)
         {
-            delete A[--i];
+            delete[] A[--i];
         }
-        delete A;
+        delete[] A;
         throw;
     }
     for (i = 0; i < m_row; i++)
@@ -33,6 +33,7 @@ CArray::CArray(int h, int w, double v, double f): m_col(w), m_row(h)
             }
         }
     }
+    n = 1;
 }
 
 CArray::CArray(std::fstream &f)
@@ -46,7 +47,7 @@ CArray::CArray(std::fstream &f)
 
     f >> this->m_row >> this->m_col;
 
-    if(this->m_row <= 0 || this->m_row <= 0)
+    if(this->m_row <= 0 || this->m_col <= 0)
     {
         throw WrongDim();
     }
@@ -68,9 +69,9 @@ CArray::CArray(std::fstream &f)
     {
         while(i > 0)
         {
-            delete A[--i];
+            delete[] A[--i];
         }
-        delete A;
+        delete[] A;
         throw bad_alloc();
     }
 
@@ -82,11 +83,16 @@ CArray::CArray(std::fstream &f)
                 f >> A[i][j];
             else
             {
-                delete A;
+                for(int i = 0; i < m_row; i++)
+                {
+                    delete[] A[i];
+                }
+                delete[] A;
                 throw file_error();
             }
         }
     }
+    n = 1;
 }
 
 CArray::CArray()
@@ -96,6 +102,10 @@ CArray::CArray()
 
 CArray::~CArray()
 {
-
+    for(int i = 0; i < m_row; i++)
+    {
+        delete[] A[i];
+    }
+    delete[] A;
 }
 
