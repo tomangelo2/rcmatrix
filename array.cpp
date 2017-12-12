@@ -76,7 +76,7 @@ CArray::CArray(std::fstream &f)
 
     for(int i = 0; i < this->m_row; i++)
     {
-        for(int j = 0; i < this->m_col; i++)
+        for(int j = 0; j < this->m_col; j++)
         {
             if(f.good())
                 f >> A[i][j]; //tutaj się sypie
