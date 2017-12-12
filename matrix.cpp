@@ -19,7 +19,7 @@ CMatrix::CMatrix(int h, int w, double v, double f)
     }
 }
 
-CMatrix::CMatrix(CMatrix& m)
+CMatrix::CMatrix(const CMatrix& m)
 {
     m.array->n++;
     this->array = m.array;
@@ -111,31 +111,31 @@ std::ostream& operator<<(std::ostream &os, CMatrix &matrix)
     array = mat.array;
     return *this;
 }*/
-CMatrix CMatrix::operator*(const CMatrix& mat) const
+CMatrix CMatrix::operator*(CMatrix mat)
 {
     //if(mat1.array == NULL || mat2.array == NULL)
         //throw null_as_argument();
     if(this->getColumns() != mat.getRows())
         throw WrongDim();
 
-    CMatrix newMat(this->getRows(), mat.getColumns());
+    CMatrix *newMat = new CMatrix(this->getRows(), mat.getColumns());
 
-    for(int i = 0; i < newMat.getColumns(); i++)
+    for(int i = 0; i < newMat->getRows(); i++)
     {
-        for(int j = 0; j < newMat.getColumns(); i++)
+        for(int j = 0; j < newMat->getColumns(); j++)
         {
             double tmp = 0.0f;
 
             for(int k = 0; k < this->getColumns(); k++)
             {
-                tmp += this->read(i,k) * mat.read(k,j);
+                tmp += read(i,k) * mat.read(k,j);
             }
 
-            newMat.write(i,j,tmp);
+            newMat->write(i,j,tmp);
         }
     }
 
-    return newMat;
+    return *newMat;
 }
 /*
 CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2)

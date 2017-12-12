@@ -20,8 +20,8 @@ int main()
 							//			6.3  6.3  6.3  ]
         std::cout << A2 << std::endl;
 		
-        //CMatrix S = A1 * A2;			//Multiply A1 by A2
-        //cout << S << endl;
+        CMatrix S = A1 * A2;			//Multiply A1 by A2
+        cout << S << endl;
 	
         fstream f1;
         f1.open("matrix.dat", fstream::in);

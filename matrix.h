@@ -11,7 +11,7 @@ public:
     //h - wysokość, w - szerokość, v - wartość na przekątnej, f - wartość pozostałych pól macierzy
     CMatrix(int w, int h, double v = 0.0f, double f = 0.0f);
     //Konstruktor kopiujący macierz
-    CMatrix(CMatrix &m);
+    CMatrix(const CMatrix& m);
     //Konstruktor tworzący macierz z wczytanego pliku
     CMatrix(std::fstream &f);
     //Pusty konstruktor
@@ -35,11 +35,10 @@ public:
     //Operator przypisujący do wyjścia
     friend std::ostream& operator<<(std::ostream &os, CMatrix &matrix);
     //Mnożenie klasy macierzy
-    CMatrix operator*(const CMatrix& mat) const;
+    CMatrix operator*(CMatrix mat);
     //friend CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2);
     //Mnożenie tablicy
     //friend CMatrix operator*(CMatrix mat1, CMatrix mat2);
-    //CMatrix& operator*(double **num);
     //Wybór elementu
     double* operator[](int i);
 
