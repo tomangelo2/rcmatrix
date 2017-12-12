@@ -79,9 +79,7 @@ CArray::CArray(std::fstream &f)
         for(int j = 0; j < this->m_col; j++)
         {
             if(f.good())
-                f >> A[i][j]; //tutaj się sypie
-            //gdb - 3: A[i][j] = <error: Cannot access memory at address 0xabababab>
-            //czyli coś jest nie tak z alokacją
+                f >> A[i][j];
             else
             {
                 delete A;
