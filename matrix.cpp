@@ -79,30 +79,10 @@ std::ostream& operator<<(std::ostream &os, CMatrix &matrix)
         }
         os << "]" << std::endl;
     }
-    //os << " ]";
     return os;
 }
 
-/*CMatrix& CMatrix::operator=(double num)
-{
-    if(num == NULL)
-    {
-        throw null_as_argument;
-    }
-    if(array->n == 1)
-    {
-        array->assign(num); //przypisz numer jeśli tablica nie jest nigdzie indziej wykorzystana
-    }
-    else
-    {
-        CArray* sub = CArray(1,1,num);
-        this->array->n--;
-        this->array = sub;
-    }
-    return *this;
-}*/
-
-/*CMatrix& CMatrix::operator=(CMatrix &mat)
+CMatrix CMatrix::operator=(CMatrix mat)
 {
     mat.array->n++;
     if(--array->n == 0)
@@ -110,11 +90,24 @@ std::ostream& operator<<(std::ostream &os, CMatrix &matrix)
 
     array = mat.array;
     return *this;
+}
+/*
+CMatrix CMatrix::operator=(double num)
+{
+    if(array->n > 1)
+    {
+        CArray *arr = new CArray(1, 1, num);
+        this->array->n--;
+        this->array = arr;
+        return *this;
+    }
+    //
 }*/
+
 CMatrix CMatrix::operator*(CMatrix mat)
 {
-    //if(mat1.array == NULL || mat2.array == NULL)
-        //throw null_as_argument();
+    if(mat.array == NULL)
+        throw null_as_argument();
     if(this->getColumns() != mat.getRows())
         throw WrongDim();
 
@@ -137,33 +130,40 @@ CMatrix CMatrix::operator*(CMatrix mat)
 
     return *newMat;
 }
-/*
-CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2)
+
+double* CMatrix::operator[](int i)
 {
-    if(mat1.getColumns() != mat2.getRows())
-        throw WrongDim();
+    check(i, getRows());
+    return array->A[i];
+    //return CMatrix(*this);
+}
 
-    CMatrix newMat(mat1.getRows(), mat2.getColumns());
-
-    for(int i = 0; i < newMat.getColumns(); i++)
-    {
-        for(int j = 0; j < newMat.getColumns(); i++)
-        {
-            double tmp = 0.0f;
-
-            for(int k = 0; k < mat1.getColumns(); k++)
-            {
-                tmp += mat1.read(i,k) * mat2.read(k,j);
-            }
-
-            newMat.write(i,j,tmp);
-        }
-    }
-
-    return newMat;
-}*/
 /*
-double* operator[](int i)
+CMatrix::Cref CMatrix::operator[](int i)
 {
-    return array->A[i]
-}*/
+    check(i, getRows());
+    //return array->A[i];
+    return Cref(*this,i);
+}
+
+CMatrix::Cref::Cref(CMatrix& matrix, int col, int row): mat(matrix), i(col), j(row)
+{
+
+}
+
+CMatrix::Cref::operator double()
+{
+    return mat.read(col, row);
+}
+
+CMatrix::Cref& CMatrix::Cref::operator=(double num)
+{
+    mat.write(col, row, num);
+    return *this;
+}
+
+CMatrix::Cref& CMatrix::Cref::operator=(Cref& ref)
+{
+    return operator=((double)ref);
+}
+*/

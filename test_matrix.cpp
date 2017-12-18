@@ -29,10 +29,10 @@ int main()
         f1.close();				//First two values in this file specify the matrix dimensions
         cout << B << endl;
 		
-        //S = B;						//Assign B to S
-        //S[0][0] = 1.4;					//Modify S
-        //cout << "S[0][0]=" << S[0][0] << endl;		//Verify S
-        //cout << "B[0][0]=" << B[0][0] << endl;		//Verify B
+        S = B;						//Assign B to S
+        S[0][0] = 1.4;					//Modify S
+        cout << "S[0][0]=" << S[0][0] << endl;		//Verify S
+        cout << "B[0][0]=" << B[0][0] << endl;		//Verify B
 	}
 	catch(IndexOutOfRange&)
 	{

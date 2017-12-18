@@ -18,6 +18,8 @@ public:
     CMatrix();
     ~CMatrix();
 
+    class Cref;
+
     /*Metody*/
     void check (int i, int j);
 
@@ -29,23 +31,32 @@ public:
 
     /*operatory*/
     //Przypisanie macierzy jako klasy
-    CMatrix& operator=(CMatrix &mat);
-    //Przypisywanie macierzy jako 2-wymiarowej tablicy
-    CMatrix& operator=(double **num);
+    CMatrix operator=(CMatrix mat);
+    //Zapisanie wartości do macierzy
+    //CMatrix operator=(double num);
     //Operator przypisujący do wyjścia
     friend std::ostream& operator<<(std::ostream &os, CMatrix &matrix);
     //Mnożenie klasy macierzy
     CMatrix operator*(CMatrix mat);
-    //friend CMatrix operator*(const CMatrix& mat1, const CMatrix& mat2);
-    //Mnożenie tablicy
-    //friend CMatrix operator*(CMatrix mat1, CMatrix mat2);
     //Wybór elementu
+    //double* operator[](int i);
     double* operator[](int i);
 
 private:
     CArray* array;
 };
+/*
+class CMatrix::Cref
+{
+    friend class CMatrix;
+    CMatrix& mat;
+    int m_col, m_row;
 
-
+public:
+    Cref(CMatrix& matrix, int col, int row);
+    operator double();
+    Cref& operator=(double num);
+    Cref& operator=(Cref& ref);
+};*/
 
 #endif // MATRIX_H
