@@ -95,13 +95,18 @@ CMatrix CMatrix::operator=(CMatrix mat)
 /*
 CMatrix CMatrix::operator=(double num)
 {
-    if(array->n > 1)
+    /*if(array->n > 1)
     {
         CArray *arr = new CArray(1, 1, num);
         this->array->n--;
         this->array = arr;
         return *this;
+    }*/
+    if(array->n==1)
+    {
+        array->A
     }
+
     //
 }*/
 
@@ -131,7 +136,7 @@ CMatrix CMatrix::operator*(CMatrix mat)
 
     return newMat;
 }
-
+/*
 double* CMatrix::operator[](int i)
 {
     check(i, getRows());
@@ -139,8 +144,8 @@ double* CMatrix::operator[](int i)
     return array->A[i];
     //return CMatrix(*this);
 }
+*/
 
-/*
 CMatrix::Cref CMatrix::operator[](int i)
 {
     check(i, getRows());
@@ -158,7 +163,7 @@ CMatrix::Cref::operator double()
     return mat.read(m_col, m_row);
 }
 
-CMatrix::Cref& CMatrix::Cref::operator=(int num)
+CMatrix::Cref& CMatrix::Cref::operator=(double num)
 {
     mat.write(m_col, m_row, num);
     return *this;
@@ -168,4 +173,9 @@ CMatrix::Cref& CMatrix::Cref::operator=(Cref& ref)
 {
     return operator=((double)ref);
 }
-*/
+
+double* CMatrix::Cref::operator[](int i)
+{
+    mat.check(i, mat.getRows());
+    return mat.array->A[i];
+}
