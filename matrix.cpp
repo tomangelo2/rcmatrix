@@ -64,6 +64,7 @@ double CMatrix::read(int col, int row) const
 
 void CMatrix::write(int col, int row, double val)
 {
+    array = array->detach();
     this->array->A[col][row] = val;
 }
 
@@ -134,6 +135,7 @@ CMatrix CMatrix::operator*(CMatrix mat)
 double* CMatrix::operator[](int i)
 {
     check(i, getRows());
+    array = array->detach();
     return array->A[i];
     //return CMatrix(*this);
 }
@@ -146,19 +148,19 @@ CMatrix::Cref CMatrix::operator[](int i)
     return Cref(*this,i);
 }
 
-CMatrix::Cref::Cref(CMatrix& matrix, int col, int row): mat(matrix), i(col), j(row)
+CMatrix::Cref::Cref(CMatrix& matrix, int col): mat(matrix), m_col(col)
 {
 
 }
 
 CMatrix::Cref::operator double()
 {
-    return mat.read(col, row);
+    return mat.read(m_col, m_row);
 }
 
-CMatrix::Cref& CMatrix::Cref::operator=(double num)
+CMatrix::Cref& CMatrix::Cref::operator=(int num)
 {
-    mat.write(col, row, num);
+    mat.write(m_col, m_row, num);
     return *this;
 }
 

@@ -7,11 +7,12 @@ class CArray
 {
 public:
     CArray(int h, int w, double v, double f);
+    CArray(int h, int w, double** mat);
     CArray(std::fstream &f);
     CArray();
     ~CArray();
 
-
+    CArray* detach();
 
 
     double** A;

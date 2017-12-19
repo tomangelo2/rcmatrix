@@ -39,8 +39,8 @@ public:
     //Mnożenie klasy macierzy
     CMatrix operator*(CMatrix mat);
     //Wybór elementu
-    //double* operator[](int i);
     double* operator[](int i);
+    //Cref operator[](int i);
 
 private:
     CArray* array;
@@ -53,10 +53,10 @@ class CMatrix::Cref
     int m_col, m_row;
 
 public:
-    Cref(CMatrix& matrix, int col, int row);
+    Cref(CMatrix& matrix, int col);
     operator double();
-    Cref& operator=(double num);
+    Cref& operator=(int num);
     Cref& operator=(Cref& ref);
-};*/
-
+};
+*/
 #endif // MATRIX_H

@@ -36,6 +36,35 @@ CArray::CArray(int h, int w, double v, double f): m_col(w), m_row(h)
     n = 1;
 }
 
+CArray::CArray(int h, int w, double** mat): m_col(w), m_row(h)
+{
+    int i = 0;
+    A = new double*[m_row];
+    try
+    {
+        for(i = 0; i < m_row; i++)
+        {
+            A[i] = new double[m_col];
+        }
+    }catch(...)
+    {
+        while(i > 0)
+        {
+            delete[] A[--i];
+        }
+        delete[] A;
+        throw;
+    }
+    for (i = 0; i < m_row; i++)
+    {
+        for (int j = 0; j < m_col; j++)
+        {
+            A[i][j] = mat[i][j];
+        }
+    }
+    n = 1;
+}
+
 CArray::CArray(std::fstream &f)
 {
     int i;
@@ -109,3 +138,11 @@ CArray::~CArray()
     delete[] A;
 }
 
+CArray* CArray::detach()
+{
+    if(n==1)
+      return this;
+    CArray* t=new CArray(m_row, m_col, A);
+    n--;
+    return t;
+}
