@@ -111,11 +111,11 @@ CMatrix CMatrix::operator*(CMatrix mat)
     if(this->getColumns() != mat.getRows())
         throw WrongDim();
 
-    CMatrix *newMat = new CMatrix(this->getRows(), mat.getColumns());
+    CMatrix newMat(this->getRows(), mat.getColumns());
 
-    for(int i = 0; i < newMat->getRows(); i++)
+    for(int i = 0; i < newMat.getRows(); i++)
     {
-        for(int j = 0; j < newMat->getColumns(); j++)
+        for(int j = 0; j < newMat.getColumns(); j++)
         {
             double tmp = 0.0f;
 
@@ -124,11 +124,11 @@ CMatrix CMatrix::operator*(CMatrix mat)
                 tmp += read(i,k) * mat.read(k,j);
             }
 
-            newMat->write(i,j,tmp);
+            newMat.write(i,j,tmp);
         }
     }
 
-    return *newMat;
+    return newMat;
 }
 
 double* CMatrix::operator[](int i)
